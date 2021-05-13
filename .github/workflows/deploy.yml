@@ -41,4 +41,18 @@ jobs:
           IMAGE_NAME: "xanderv2001/pc-parts-api"
           LATEST: "true" 
       
+      - name: Update server
+        uses: appleboy/ssh-action@master
+        with: 
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            docker pull xanderv2001/pc-parts-api
+            docker stop pcpartsapi
+            docker rm pcpartsapi
+            docker run --name pcpartsapi --restart always -d xanderv2001/pc-parts-api
+            docker image prune
+
 
