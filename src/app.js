@@ -1,6 +1,9 @@
 // Enable dotenv
 require('dotenv').config();
 
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 import express from 'express'
 import { ApolloServer, gql } from "apollo-server-express";
 import mongoose from "mongoose";
@@ -36,7 +39,11 @@ const startServer = async () => {
 
     let mongooseConnectionURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_DATABASE}${process.env.DB_OPTIONS}`
 
-    await mongoose.connect(mongooseConnectionURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(mongooseConnectionURI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+        console.log("Database Connected")
+    }).catch((err) => {
+        console.error(err)
+    });
 
     app.listen({ port: 4000 }, () => {
         console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
