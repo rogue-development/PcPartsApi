@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon --exec npx babel-node src/app.js"
+    "start": "nodemon --exec npx babel-node src/app.js",
+    "build": "npx babel src --out-dir prod",
+    "build:docker": "npx babel src --out-dir prod && docker build . -t xanderv2001/pc-parts-api"
   },
   "keywords": [],
   "author": "",
@@ -20,9 +22,11 @@
     "apollo-server-express": "^2.24.0",
     "bad-words": "^3.0.4",
     "bcrypt": "^5.0.1",
+    "core-js": "^3.12.1",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "graphql": "^15.5.0",
-    "mongoose": "^5.12.8"
+    "mongoose": "^5.12.8",
+    "regenerator-runtime": "^0.13.7"
   }
 }

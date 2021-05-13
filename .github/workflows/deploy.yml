@@ -1,0 +1,45 @@
+name: Deply to server
+on: 
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  
+  workflow_dispatch:
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Generate .env file
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_DB_USER: ${{ secrets.DB_USER }}
+          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          envkey_DB_HOST: ${{ secrets.DB_HOST }}
+          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          envkey_DB_OPTIONS: ${{ secrets.DB_OPTIONS }}
+      
+      - name: Build project
+        uses: actions/setup-node@v2
+        with:
+          node-version: '15'
+        run: npm ci
+        run: npm run build
+      
+      - name: Create docker container
+        uses: opspresso/action-docker@master
+        with:
+          args: --docker
+        env:
+          USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKERFILE: "Dockerfile"
+          IMAGE_NAME: "xanderv2001/pc-parts-api"
+          LATEST: "true" 
+      
+
