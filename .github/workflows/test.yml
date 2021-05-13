@@ -1,13 +1,13 @@
-name: Deploy to server
+name: Test
 on: 
-  push:
-    branches: [master]
+  pull_request:
+    types: [opened, synchronize ready_for_review, review_requested]
   
   workflow_dispatch:
 
 jobs:
 
-  deploy:
+  Test:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,16 +29,4 @@ jobs:
       
       - run: npm ci
       - run: npm run build
-      
-      - name: Create docker container
-        uses: opspresso/action-docker@master
-        with:
-          args: --docker
-        env:
-          USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKERFILE: "Dockerfile"
-          IMAGE_NAME: "xanderv2001/pc-parts-api"
-          LATEST: "true" 
-      
-
+      - run: node prod/app.js
