@@ -22,11 +22,14 @@
     "apollo-server-express": "^2.24.0",
     "bad-words": "^3.0.4",
     "bcrypt": "^5.0.1",
+    "colors": "^1.4.0",
     "core-js": "^3.12.1",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "graphql": "^15.5.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.8",
-    "regenerator-runtime": "^0.13.7"
+    "regenerator-runtime": "^0.13.7",
+    "uuid": "^8.3.2"
   }
 }

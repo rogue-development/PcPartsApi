@@ -20,6 +20,22 @@ export const resolvers = {
             return null;
         }
     }),
+    AuthToken: new GraphQLScalarType({
+        name: "AuthToken",
+        description: "Authentication token in JWT format",
+        parseValue(value) {
+            return String(value);
+        },
+        serialize(value) {
+            return String(value);
+        },
+        parseLiteral(ast) {
+            if (ast.kind === Kind.STRING) {
+                return String(ast);
+            }
+            return null;
+        }
+    }),
     Query: {
         cpu: (_, cpu, context) => {
             return CPU.searchCPU(cpu.CPU)
@@ -31,7 +47,7 @@ export const resolvers = {
             return CPU.addCPU(cpu.CPU)
         },
         register: async (_, { user }, context) => {
-            return await User.register(user);
+            return await User.register(user, context.ip);
         },
         login: async (_, { user }, context) => {
             return await User.login(user, context.ip)

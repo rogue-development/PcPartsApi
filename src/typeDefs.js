@@ -7,8 +7,8 @@ export const typeDefs = gql`
 
     type Mutation {
         addCPU(CPU:addCPU!): CPU!
-        register(user: Register): User
-        login(user: Login): Boolean!
+        register(user: Register): RegisterInfo!
+        login(user: Login): AuthToken!
     }
 
     # =================
@@ -16,6 +16,16 @@ export const typeDefs = gql`
     # =================
 
     scalar Date
+    scalar AuthToken
+
+    # =================
+    # Authentication
+    # =================
+
+    type RegisterInfo {
+        user: User!
+        authToken: AuthToken!
+    }
 
     # =================
     # CPU
@@ -129,7 +139,7 @@ export const typeDefs = gql`
     type User {
         email: String!
         username: String!
-        avatar: String!
+        avatar: String
         last_login_date: Date
         roles: [String]!
     }
