@@ -21,14 +21,14 @@ const userSchema = new Schema({
         required: true,
     },
     avatar: {
-        type: String
+        type: String,
     },
     last_login_date: {
         type: Date
     },
     roles: {
         type: Array,
-        default: ["unverified"]
+        default: ["unverified", "user"]
     },
     sessions: [
         {
@@ -68,6 +68,9 @@ export class User {
 
         let user2 = {};
         Object.assign(user2, user);
+
+        // Set default random avatar
+        user.avatar = `https://avatars.dicebear.com/api/identicon/${UUID}.svg`
 
         // Encrypt password
         const hash = bcrypt.hashSync(user.password, 10);
