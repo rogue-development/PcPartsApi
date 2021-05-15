@@ -6,8 +6,8 @@ const { Schema } = mongoose;
 const cpuSchema = new Schema({
     brand: String,
     model: String,
-    baseClock: Number,
-    boostClock: Number,
+    base_clock: Number,
+    boost_clock: Number,
     socket: String,
     cores: Number,
     threads: Number,
@@ -31,7 +31,7 @@ export class CPU {
             }
         })
         const processor = new mdbCPU(cpu);
-        await mdbCPU.find(cpu).exec(async (err, storedCPU) => {
+        await mdbCPU.find({ model: cpu.model }).exec(async (err, storedCPU) => {
             if (storedCPU.length == 0) {
                 await processor.save();
             }

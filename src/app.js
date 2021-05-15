@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import { typeDefs } from "./typeDefs";
 import { resolvers } from "./resolvers";
 import { User } from './models/Users/User';
+import "colors"
 
 const app = express();
 app.set('trust proxy', true)
@@ -39,13 +40,13 @@ const startServer = async () => {
     let mongooseConnectionURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_DATABASE}${process.env.DB_OPTIONS}`
 
     await mongoose.connect(mongooseConnectionURI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-        console.log("Database Connected")
+        console.log("Database Connected".green)
     }).catch((err) => {
-        console.error(err)
+        console.error(err.red)
     });
 
     app.listen({ port: 4000 }, () => {
-        console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+        console.log(`🚀 Server ready at`.yellow + ` http://localhost:4000${server.graphqlPath}`.blue.bold);
     })
 }
 
