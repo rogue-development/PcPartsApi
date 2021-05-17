@@ -35,7 +35,7 @@ const startServer = async () => {
         }
     });
 
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ app, path: "/" });
 
     let mongooseConnectionURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_DATABASE}${process.env.DB_OPTIONS}`
 
