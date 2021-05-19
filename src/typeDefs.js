@@ -9,6 +9,13 @@ export const typeDefs = gql`
         ram(RAM:searchRAM): [RAM]!
         ssd(SSD:searchSSD): [SSD]!
         hdd(HDD:searchHDD): [HDD]!
+
+        allCPU: [CPU]!
+        allGPU: [GPU]!
+        allPSU: [PSU]!
+        allRAM: [RAM]!
+        allSSD: [SSD]!
+        allHDD: [HDD]!
     }
 
     type Mutation {

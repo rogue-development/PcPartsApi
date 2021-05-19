@@ -59,4 +59,8 @@ export class SSD {
     static async searchSSD(ssd) {
         return await mdbSSD.find(ssd);
     }
+
+    static async getAll() {
+        return await mdbSSD.find();
+    }
 }

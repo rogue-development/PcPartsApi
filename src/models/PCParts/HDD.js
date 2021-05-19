@@ -50,4 +50,8 @@ export class HDD {
     static async searchHDD(hdd) {
         return await mdbHDD.find(HDD);
     }
+
+    static async getAll() {
+        return await mdbHDD.find();
+    }
 }

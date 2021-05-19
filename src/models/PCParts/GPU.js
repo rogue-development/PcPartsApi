@@ -58,4 +58,8 @@ export class GPU {
     static async searchGPU(gpu) {
         return await mdbGPU.find(gpu);
     }
+
+    static async getAll() {
+        return await mdbGPU.find();
+    }
 }

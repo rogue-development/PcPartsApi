@@ -126,6 +126,7 @@ export class User {
         let decoded = await jwt.verify(token.split("Bearer ")[1], process.env.JWT_PRIV_KEY, (err, decoded) => {
             return decoded;
         })
+        if (decoded == undefined) return null;
         let user = await mdbUser.findOne({ "sessions._id": decoded.ssid })
         if (user == null) return null;
 

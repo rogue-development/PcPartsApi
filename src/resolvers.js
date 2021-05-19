@@ -7,6 +7,7 @@ import { RAM } from './models/PCParts/RAM';
 import { SSD } from './models/PCParts/SSD';
 import { HDD } from './models/PCParts/HDD';
 import { User } from "./models/Users/User";
+import { async } from "regenerator-runtime";
 
 export const resolvers = {
     Date: new GraphQLScalarType({
@@ -48,6 +49,13 @@ export const resolvers = {
         ram: async (_, ram, context) => await RAM.searchRAM(ram.RAM),
         ssd: async (_, ssd, context) => await SSD.searchSSD(ssd.SSD),
         hdd: async (_, hdd, context) => await HDD.searchHDD(hdd.HDD),
+
+        allCPU: async (_, _input, _context) => await CPU.getAll(),
+        allGPU: async (_, _input, _context) => await GPU.getAll(),
+        allPSU: async (_, _input, _context) => await PSU.getAll(),
+        allRAM: async (_, _input, _context) => await RAM.getAll(),
+        allSSD: async (_, _input, _context) => await SSD.getAll(),
+        allHDD: async (_, _input, _context) => await HDD.getAll(),
     },
     Mutation: {
         addCPU: async (_, cpu, context) => {
