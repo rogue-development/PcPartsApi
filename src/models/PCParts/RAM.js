@@ -47,4 +47,8 @@ export class RAM {
     static async searchRAM(ram) {
         return await mdbRAM.find(ram);
     }
+
+    static async getAll() {
+        return await mdbRAM.find();
+    }
 }

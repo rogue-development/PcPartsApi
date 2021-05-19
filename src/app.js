@@ -16,8 +16,7 @@ app.set('trust proxy', true)
 
 const getUser = async (token) => {
     if (token == '') return null;
-
-    // TODO: Fix this shit to actually use tokens
+    if (!token.includes("Bearer ")) return null;
     return await User.getUserByToken(token);
 }
 

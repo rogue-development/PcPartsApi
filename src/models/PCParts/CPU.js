@@ -42,4 +42,8 @@ export class CPU {
     static async searchCPU(cpu) {
         return await mdbCPU.find(cpu);
     }
+
+    static async getAll() {
+        return await mdbCPU.find();
+    }
 }

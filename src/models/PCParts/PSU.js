@@ -58,4 +58,8 @@ export class PSU {
     static async searchPSU(psu) {
         return await mdbPSU.find(psu);
     }
+
+    static async getAll() {
+        return await mdbPSU.find();
+    }
 }
