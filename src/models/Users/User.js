@@ -1,9 +1,13 @@
+
+require('dotenv').config();
 import { AuthenticationError, UserInputError } from 'apollo-server-errors';
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { v4 as UUID } from 'uuid';
 import 'colors'
+import tokenGenerator from 'token-generator';
+import { sendVerificationMail } from '../../mailer';
 
 const userSchema = new Schema({
     email: {
@@ -29,6 +33,9 @@ const userSchema = new Schema({
     roles: {
         type: Array,
         default: ["unverified", "user"]
+    },
+    verification_token: {
+        type: String
     },
     sessions: [
         {
@@ -60,6 +67,7 @@ const userSchema = new Schema({
 const userConn = mongoose.connection.useDb("Users");
 const mdbUser = userConn.model("User", userSchema);
 
+const TokenGenerator = tokenGenerator({ salt: process.env.TOKEN_SALT, timestampMap: process.env.TOKEN_TIMESTAMP_MAP, expiresOn: 5 * 60 })
 export class User {
     static async register(user, ip) {
         // Ensure data is valid
@@ -75,6 +83,12 @@ export class User {
         // Encrypt password
         const hash = bcrypt.hashSync(user.password, 10);
         user.password = hash;
+
+        let token = TokenGenerator.generate();
+
+        user.verification_token = token;
+        sendVerificationMail(user.email, token);
+
         await new mdbUser(user).save();
 
         const storedUser = await mdbUser.findOne({ email: user.email });
@@ -138,6 +152,38 @@ export class User {
             }
         } else {
             return null;
+        }
+    }
+
+
+    static async verifyToken(token) {
+        if (TokenGenerator.isValid(token)) {
+            let user = mdbUser.findOne({ verification_token: token });
+            if (!user) {
+                return "Token doesn't belong to a user";
+            }
+
+            await mdbUser.updateOne({ verification_token: token },
+                {
+                    $pull: {
+                        roles: "unverified"
+                    }
+                }
+            );
+            await mdbUser.updateOne({ verification_token: token },
+                {
+                    $addToSet: {
+                        roles: "verified"
+                    }
+                }
+            );
+            return "Account succesfully verified!"
+        } else {
+            try {
+                TokenGenerator.validate(token);
+            } catch (err) {
+                return err.message;
+            }
         }
     }
 }

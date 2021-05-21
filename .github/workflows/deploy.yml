@@ -53,5 +53,5 @@ jobs:
             sudo docker pull xanderv2001/pc-parts-api
             sudo docker stop pcpartsapi
             sudo docker rm pcpartsapi
-            sudo docker run --name pcpartsapi --restart always -p 4000:4000 -d xanderv2001/pc-parts-api
+            sudo docker run --name pcpartsapi --restart always -p 127.0.0.1:4000:4000 -d xanderv2001/pc-parts-api
             sudo docker image prune -f
