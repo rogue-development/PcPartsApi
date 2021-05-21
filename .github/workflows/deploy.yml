@@ -24,7 +24,7 @@ jobs:
           envkey_JWT_PRIV_KEY: ${{ secrets.JWT_PRIV_KEY }}
           envkey_SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
           envkey_TOKEN_SALT: ${{ secrets.TOKEN_SALT }}
-          envkey_TOKEN_TIMESTAMP_MAP: ${{ secretes.TOKEN_TIMESTAMP_MAP }}
+          envkey_TOKEN_TIMESTAMP_MAP: ${{ secrets.TOKEN_TIMESTAMP_MAP }}
       
       - name: Build project
         uses: actions/setup-node@v2
