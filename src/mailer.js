@@ -10,7 +10,8 @@ export function sendVerificationMail(email, token) {
         from: 'pcpartsapi@xandervos.nl',
         templateId: 'd-766085edc2ba4198a4bbe9b49c3b74ee',
         dynamicTemplateData: {
-            verification_uri: `https://account.parts.xandervos.nl/verify?token=${token}`
+            verification_uri: `https://account.parts.xandervos.nl/verify?token=${token}`,
+            resend_verification_uri: `https://accounts.parts.xandervos.nl/verify/resend?token=${token}`
         }
     })
 }

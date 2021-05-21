@@ -22,6 +22,7 @@ export const typeDefs = gql`
         # Authentication
         register(user: Register): RegisterInfo!
         login(user: Login): AuthToken!
+        requestNewVerificationEmail(token: String!): verificationResult!
 
         # PC Parts
         addCPU(CPU:inputCPU!): CPU!
@@ -58,6 +59,11 @@ export const typeDefs = gql`
     input Login {
         email: String!
         password: String!
+    }
+
+    type verificationResult {
+        sent: Boolean!
+        message: String!
     }
 
     # =================

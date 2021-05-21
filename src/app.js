@@ -11,6 +11,7 @@ import { resolvers } from "./resolvers";
 import { User } from './models/Users/User';
 import "colors"
 import { sendVerificationMail, setupSendgrid } from "./mailer";
+import { cleanTokens } from "./TokenGenerator";
 
 const getUser = async (token) => {
     if (token == '') return null;
@@ -52,18 +53,23 @@ const startGraphQLServer = async () => {
 }
 
 const startRESTServer = async () => {
+    setInterval(cleanTokens, 1000 * 60 * 60);
     const app = express();
     app.set('trust proxy', true);
 
     app.get("/verify", async (req, res) => {
-        let verification_token = req.query.token;
-        res.send(await User.verifyToken(verification_token));
+        if (req.query.token == undefined) { res.send("Token is required"); return; }
+        res.send(await User.verifyToken(req.query.token));
     });
+    app.get("/verify/resend", async (req, res) => {
+        if (req.query.token == undefined) { res.send("Token is required"); return; }
+        res.send(await User.resendVerificationToken(req.query.token));
+    })
 
     app.listen({ port: 4001 }, () => {
         console.log("REST server ready at".yellow + ` http://localhost:4001`.blue.bold);
     })
 }
 
-startRESTServer();
 startGraphQLServer();
+startRESTServer();
