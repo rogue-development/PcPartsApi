@@ -87,6 +87,13 @@ export const resolvers = {
         },
         login: async (_, { user }, context) => {
             return await User.login(user, context.ip)
+        },
+        requestNewVerificationEmail: async (_, { token }, _context) => {
+            let message = await User.resendVerificationToken(token);
+            return {
+                message,
+                sent: message == "Verification email has been resent"
+            }
         }
     }
 }
