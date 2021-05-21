@@ -10,5 +10,6 @@ COPY prod/ ./
 COPY .env ./
 
 EXPOSE 4000
+EXPOSE 4001
 
 CMD ["node", "app.js"]
