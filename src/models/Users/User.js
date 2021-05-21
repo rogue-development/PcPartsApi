@@ -155,8 +155,7 @@ export class User {
     }
 
     static async verifyToken(token) {
-        validate(token);
-        if (isValid(token)) {
+        if (await isValid(token)) {
             let user = await mdbUser.findOne({ verification_token: token });
             if (!user) {
                 return "Token doesn't belong to a user";
@@ -178,19 +177,19 @@ export class User {
             );
             return "Account succesfully verified!"
         } else {
-            try {
-                validate(token);
-            } catch (err) {
-                return err.message;
-            }
+            let err = await validate(token).catch((err) => {
+                return err;
+            })
+            return err;
         }
     }
 
     static async resendVerificationToken(token) {
-        if (isValid(token)) {
-            let user = await mdbUser.findOne({ verification_token: token });
-            if (!user) return "Token doesn't belong to a user";
+        let user = await mdbUser.findOne({ verification_token: token });
+        if (!user) return "Token doesn't belong to a user";
+        if (user.roles.includes("verified")) return "User is already verified";
 
+        if (!(await isValid(token))) {
             let newToken = await generate(5 * 60, user.email);
 
             await mdbUser.updateOne({ verification_token: token },

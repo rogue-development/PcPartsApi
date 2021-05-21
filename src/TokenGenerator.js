@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 import { v4 as UUID } from 'uuid';
+import 'colors';
 
 let verificationToken_schema = new Schema({
     token: {
@@ -46,15 +47,34 @@ export async function generate(expiration_time, email) {
     return token;
 }
 
-export async function validate(token) {
-    if (!token) throw new Error("Token is required for verification");
-    let verificationToken = await mdbToken.findOne({ token: token });
-    if (!verificationToken) throw new Error("Token isn't found in the database");
+export function validate(token) {
+    return new Promise(async (resolve, reject) => {
+        if (!token) return reject("Token can't be empty");
+        let verificationToken = await mdbToken.findOne({ token: token });
+        if (!verificationToken) return reject("Token does not exist in database");
 
-    console.log(verificationToken);
-    // if(token.expiry_time)
+        if (verificationToken.expiry_time < new Date()) {
+            return reject("Token is expired");
+        } else {
+            return resolve("Token is valid");
+        }
+    });
 }
 
-export function isValid(token) {
-    return true
+export async function isValid(token) {
+    return await validate(token).then((val) => {
+        return true;
+    }).catch((err) => {
+        return false;
+    })
+}
+
+export async function cleanTokens() {
+    console.log("Cleaning tokens".bgGreen.bold);
+    let tokens = await mdbToken.find();
+    tokens.forEach(token => {
+        if (token.expiry_time < new Date()) {
+            mdbToken.deleteOne({ token: token.token });
+        }
+    })
 }

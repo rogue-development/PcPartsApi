@@ -7,7 +7,6 @@ import { RAM } from './models/PCParts/RAM';
 import { SSD } from './models/PCParts/SSD';
 import { HDD } from './models/PCParts/HDD';
 import { User } from "./models/Users/User";
-import { async } from "regenerator-runtime";
 
 export const resolvers = {
     Date: new GraphQLScalarType({

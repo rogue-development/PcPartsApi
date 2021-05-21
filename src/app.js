@@ -11,6 +11,7 @@ import { resolvers } from "./resolvers";
 import { User } from './models/Users/User';
 import "colors"
 import { sendVerificationMail, setupSendgrid } from "./mailer";
+import { cleanTokens } from "./TokenGenerator";
 
 const getUser = async (token) => {
     if (token == '') return null;
@@ -52,6 +53,7 @@ const startGraphQLServer = async () => {
 }
 
 const startRESTServer = async () => {
+    setInterval(cleanTokens, 1000 * 60 * 60);
     const app = express();
     app.set('trust proxy', true);
 
