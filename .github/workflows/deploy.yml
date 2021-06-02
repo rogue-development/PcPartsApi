@@ -25,6 +25,10 @@ jobs:
           envkey_SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
           envkey_TOKEN_SALT: ${{ secrets.TOKEN_SALT }}
           envkey_TOKEN_TIMESTAMP_MAP: ${{ secrets.TOKEN_TIMESTAMP_MAP }}
+          envkey_APOLLO_KEY: ${{ secrets.APOLLO_KEY }}
+          envkey_APOLLO_GRAPH_ID: ${{ secrets.APOLLO_GRAPH_ID }}
+          envkey_APOLLO_GRAPH_VARIANT: ${{ secrets.APOLLO_GRAPH_VARIANT }}
+          envkey_APOLLO_SCHEMA_REPORTING: ${{ secrets.APOLLO_SCHEMA_REPORTING }}
       
       - name: Build project
         uses: actions/setup-node@v2
